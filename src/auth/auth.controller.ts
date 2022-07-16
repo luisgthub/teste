@@ -9,6 +9,7 @@ import { RegisterDto } from './models/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response ,Request} from 'express';
 import { AuthGuard } from './auth.guard';
+import { Role } from 'src/funcao/role.entity';
 
 
 
@@ -27,12 +28,11 @@ export class AuthController {
             throw new BadRequestException('passwords do not match')
         }
         const hashed = await bcrypt.hash(body.password,12)
+        const {role_id, ...data} = body;
         return this.userService.create({
-            first_name:body.first_name,
-            last_name:body.last_name,
-            email:body.email,
+            ...data,
             password:hashed,
-            role:{id:1}
+            role:{id:role_id},
         });
     }
 

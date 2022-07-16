@@ -11,4 +11,6 @@ export class createTeamDto {
     @IsOptional()
     points:number;
 
+    @IsNotEmpty()
+    user_id:number
 }
