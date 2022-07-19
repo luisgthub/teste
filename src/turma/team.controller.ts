@@ -21,17 +21,15 @@ import { TeamService } from './team.service';
 
         @Get()
         async all(@Query('page')page:number = 1){
-            return await this.teamService.paginate(page,[]);
+            return await this.teamService.paginate(page,['users']);
         }
 
         @Post('createteam')
         async create(@Body() body:createTeamDto,@Body('users') ids:number[]) {
-    
+            const {user_id, ...data} = body;
             return this.teamService.create({
-                name:body.name,
-                description:body.description,
-                created_at:body.created_at,
-                users:ids.map(id=>({id}))
+                ...data,
+                users:{id:user_id}
                 
             });
         }
@@ -39,7 +37,7 @@ import { TeamService } from './team.service';
         
     @Get(':id')
     async get(@Param('id') id:number) {
-        return this.teamService.findOne({id},['users'])
+        return this.teamService.findOne({id},['users','group'])
 }
 
 @Put(':id')

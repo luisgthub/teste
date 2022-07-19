@@ -11,6 +11,12 @@ export class GroupDto {
     
     @IsOptional()
     xp:number;
+
+    @IsNotEmpty()
+    user_id:number;
+
+    @IsNotEmpty()
+    team_id:number;
  
  
 }

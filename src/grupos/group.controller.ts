@@ -15,17 +15,16 @@ export class GroupController {
 
     @Get()
     async all(@Query('page')page:number = 1){
-        return await this.groupService.paginate(page,['teams']);
+        return await this.groupService.paginate(page,['teams','users']);
     }
 
     @Post('creategroup')
     async create(@Body() body:GroupDto,@Body('teams') @Body('users') ids:number[]) {
-
+        const {user_id,team_id, ...data} = body;
         return this.groupService.create({
-            name:body.name,
-            description:body.description,
-            teams:ids.map(id=>({id})),
-            user:ids.map(id=>({id}))
+            ...data,
+            teams:{id:team_id},
+            users:{id:user_id}
             
         });
     }
